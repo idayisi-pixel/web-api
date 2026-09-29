@@ -33,8 +33,11 @@ namespace TodoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var comments = await _commentRepository.GetAllCommentsAsync();
-            var response = comments.Select(c => c.ToCommentDTO());
+            var email = User.GetEmail();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            var comments = await _commentRepository.GetAllCommentsAsync(user);
+            var response = comments.Select(c => c.ToCommentDTO()).ToList();
 
             return Ok(response);
         }

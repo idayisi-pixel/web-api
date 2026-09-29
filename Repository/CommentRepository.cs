@@ -41,14 +41,22 @@ namespace TodoApi.Repository
             return true;
         }
 
-        public async Task<List<Comment>> GetAllCommentsAsync()
+        public async Task<List<Comment>> GetAllCommentsAsync(User user)
         {
-            return await _context.Comment.ToListAsync();
+            return await _context.Comment
+                .AsNoTracking()
+                .Where(c => c.UserId == user.Id)
+                .Include(c => c.Stock)
+                .Include(c => c.User)
+                .ToListAsync();
         }
 
         public async Task<Comment?> GetCommentAsync(int id)
         {
-            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.Id == id);
+            var comment = await _context.Comment
+                                        .Include(c => c.Stock)
+                                        .Include(c => c.User)
+                                        .FirstOrDefaultAsync(c => c.Id == id);
 
             if (comment == null) return null;
 

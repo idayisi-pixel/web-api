@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TodoApi.DTOs.Comment;
+using TodoApi.DTOs.Stock;
 using TodoApi.Models;
-
+//eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvYml5MjNAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6Iml5YW51MjMiLCJuYmYiOjE3OTA2ODQ0NTUsImV4cCI6MTc5MDk0MzY1NSwiaWF0IjoxNzkwNjg0NDU1LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MjAxIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MjAxIn0.NGFGwfZItTX_9J-RFrzvTH1qibGuJPIYpcaFzH7jreyYKj_7td-N6vCH6_fNmfhTrM0XAjOzvQZpp61rjVq1bw
 namespace TodoApi.Mappers
 {
     public static class CommentMapper
@@ -17,8 +18,21 @@ namespace TodoApi.Mappers
                 Id = comment.Id,
                 Title = comment.Title,
                 Content = comment.Content,
-                StockId = comment.StockId,
-                UserId = comment.UserId,
+                PurchasedStock = new CommentStockDTO{
+                    Id = comment.Stock.Id,
+                    Symbol = comment.Stock.Symbol,
+                    CompanyName = comment.Stock.CompanyName,
+                    PurchasePrice = comment.Stock.PurchasePrice,
+                    LastDividend = comment.Stock.LastDividend,
+                    Industry = comment.Stock.Industry,
+                    MarketCap = comment.Stock.MarketCap
+                },
+                CreatedBy = new CommentUserDTO
+                {
+                    Id = comment.User.Id,
+                    UserName = comment.User.UserName,
+                    Email = comment.User.Email
+                },
                 CommentDate = (DateTime)(comment.UpdatedAt == null ? comment.CreatedAt : comment.UpdatedAt)
             };
         }

@@ -9,7 +9,7 @@ namespace TodoApi.Interfaces
 {
     public interface ICommentRepository
     {
-        Task<List<Comment>> GetAllCommentsAsync();
+        Task<List<Comment>> GetAllCommentsAsync(User user);
         Task<Comment?> GetCommentAsync(int id);
         Task<Comment> CreateCommentAsync(int stockId, Comment comment, User user);
         Task<Comment?> UpdateCommentAsync(int id, UpdateCommentDTO updateCommentDTO, User user);
